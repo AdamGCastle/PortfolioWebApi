@@ -11,7 +11,7 @@ env:
   AZURE_APIM_SERVICENAME: PortfolioWebApiapi
   AZURE_APIM_API_ID: PortfolioWebApi
   AZURE_APIM_APPSERVICEURL: https://portfoliowebapi-dvbwcscga0bygyf4.uksouth-01.azurewebsites.net
-  SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.9
+  SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
   SWASHBUCKLE_DOTNET_CORE_VERSION: 3.1.x
   API_IMPORT_SPECIFICATION_PATH: PortfolioWebApi\publish\swagger.json
   API_IMPORT_DLL: PortfolioWebApi\bin\Release\net8.0\PortfolioWebApi.dll
