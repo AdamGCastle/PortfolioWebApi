@@ -49,7 +49,7 @@ namespace PortfolioWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> ReadAll()
         {
-            var toretun = _acPortfolioDb.Surveys;
+            var toretun = await _acPortfolioDb.Surveys.ToListAsync();
 
             //return Ok(_acPortfolioDb.Surveys);
             return Ok(toretun);
