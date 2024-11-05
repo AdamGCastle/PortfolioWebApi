@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PortfolioWebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f8b1beaf39d452e995e3176b8ee59d53fac37ff6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c992469a60f56a706b978cfa278986201b16bb33")]
 [assembly: System.Reflection.AssemblyProductAttribute("PortfolioWebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PortfolioWebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
