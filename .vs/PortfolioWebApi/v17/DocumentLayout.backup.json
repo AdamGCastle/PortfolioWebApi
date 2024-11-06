@@ -101,8 +101,7 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwBAAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-12T22:40:20.619Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -146,8 +145,7 @@
               "RelativeToolTip": "PortfolioWebApi\\PortfolioWebApi.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-01T00:12:01.436Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-01T00:12:01.436Z"
             },
             {
               "$type": "Document",
@@ -158,8 +156,7 @@
               "ToolTip": "C:\\Users\\adam_\\source\\repos\\PortfolioWebApi\\PortfolioWebApi\\PortfolioWebApi.csproj",
               "RelativeToolTip": "PortfolioWebApi\\PortfolioWebApi.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-01T00:27:41.495Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-01T00:27:41.495Z"
             },
             {
               "$type": "Document",
@@ -171,8 +168,7 @@
               "RelativeToolTip": "PortfolioWebApi\\appsettings.Development.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-11-01T00:16:31.553Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-01T00:16:31.553Z"
             },
             {
               "$type": "Document",
@@ -195,8 +191,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Properties\\launchSettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-31T21:18:45.09Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-31T21:18:45.09Z"
             },
             {
               "$type": "Document",
@@ -208,8 +203,7 @@
               "RelativeToolTip": "PortfolioWebApi\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-31T21:17:43.592Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-31T21:17:43.592Z"
             },
             {
               "$type": "Document",
@@ -221,8 +215,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Models\\Survey.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-29T21:01:02.738Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-29T21:01:02.738Z"
             },
             {
               "$type": "Document",
@@ -234,8 +227,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Contexts\\AcPortFolioDbContext.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAA8wBsAAABfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-29T20:59:09.069Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-29T20:59:09.069Z"
             },
             {
               "$type": "Document",
@@ -247,8 +239,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Controllers\\SurveysController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T01:25:44.33Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-28T01:25:44.33Z"
             },
             {
               "$type": "Document",
@@ -260,8 +251,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Models\\SurveyResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwAwAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T01:22:41.631Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-28T01:22:41.631Z"
             },
             {
               "$type": "Document",
@@ -273,8 +263,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Configurations\\QuestionConfiguration.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T00:53:58.553Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-28T00:53:58.553Z"
             },
             {
               "$type": "Document",
@@ -286,8 +275,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Models\\MultipleChoiceOptionResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwAoAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-27T23:53:34.357Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-27T23:53:34.357Z"
             },
             {
               "$type": "Document",
@@ -299,8 +287,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Models\\Question.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwAQAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-12T22:40:56.996Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-12T22:40:56.996Z"
             },
             {
               "$type": "Document",
@@ -312,8 +299,7 @@
               "RelativeToolTip": "PortfolioWebApi\\Models\\MultipleChoiceOption.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T20:33:19.502Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T20:33:19.502Z"
             }
           ]
         }
