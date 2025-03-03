@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PortfolioWebApi.Contexts;
 using PortfolioWebApi.Models;
-using System.Threading.Tasks;
 
 namespace PortfolioWebApi.Controllers
 {
@@ -50,16 +49,15 @@ namespace PortfolioWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> ReadAll()
         {
-            //await Task.Delay(75000);
             var toretun = await _acPortfolioDb.Surveys.ToListAsync();
 
+            //return Ok(_acPortfolioDb.Surveys);
             return Ok(toretun);
         }
 
         [HttpGet]
         public async Task<IActionResult> ReadById(int id)
         {
-            //await Task.Delay(30000);
             if (id == 0)
             {
                 return BadRequest("Survey ID cannot be 0.");
