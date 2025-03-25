@@ -49,8 +49,8 @@ namespace PortfolioWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> ReadAll()
         {
-            var toretun = await _acPortfolioDb.Surveys.ToListAsync();
-
+            //var toretun = await _acPortfolioDb.Surveys.ToListAsync();
+            var toretun = new List<Survey>() { new Survey() { Name = "Bob's Survey"} };
             //return Ok(_acPortfolioDb.Surveys);
             return Ok(toretun);
         }
