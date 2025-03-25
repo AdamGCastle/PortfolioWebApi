@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(policyName, policyBuilder => policyBuilder
-            .WithOrigins("*")
+            .WithOrigins("https://takeasurvey.acprojects.ip-ddns.com", "https://makeasurvey.acprojects.ip-ddns.com", "witty-island-04b8c5b03.5.azurestaticapps.net", "white-sea-00426ad03.5.azurestaticapps.net")
             .AllowAnyHeader()
             .AllowAnyMethod()
         );
