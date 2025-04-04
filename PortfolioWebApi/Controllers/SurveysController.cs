@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using PortfolioWebApi.Contexts;
+using PortfolioWebApi.Extensions;
 using PortfolioWebApi.Models;
 
 namespace PortfolioWebApi.Controllers
@@ -26,6 +28,13 @@ namespace PortfolioWebApi.Controllers
                 return BadRequest("Please add a question.");
             }
 
+            var accountId = User.GetAccountIdOrNull();
+
+            if (accountId.HasValue && accountId != 0)
+            {               
+                model.CreatedByAccountId = accountId;                
+            }          
+
             model.Id = 0;
             model.DateCreated = DateTime.Now;
 
@@ -39,17 +48,19 @@ namespace PortfolioWebApi.Controllers
                 }
             }
 
-            await _acPortfolioDb.Surveys.AddAsync(model);
-
+            _acPortfolioDb.Surveys.Add(model);
             await _acPortfolioDb.SaveChangesAsync();
 
             return Ok(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ReadAll()
+        public async Task<IActionResult> ReadAll(bool forEdit)
         {
-            var surveys = await _acPortfolioDb.Surveys.ToListAsync();
+            var accountId = User.GetAccountIdOrNull();
+            var surveys = await _acPortfolioDb.Surveys
+                                .Where(x => !forEdit || x.CreatedByAccountId == 0 || x.CreatedByAccountId == null || x.CreatedByAccountId == accountId)
+                                .ToListAsync();
 
             return Ok(surveys);
         }
@@ -66,6 +77,22 @@ namespace PortfolioWebApi.Controllers
                 .Include(x => x.Questions)
                 .ThenInclude(x => x.MultipleChoiceOptions)
                 .FirstOrDefaultAsync(x => x.Id == id));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReadByAccountId(int accountId)
+        {
+            if (accountId == 0)
+            {
+                return BadRequest("Survey ID cannot be 0.");
+            }
+
+            var loggedInAccountId = User.GetAccountIdOrNull();
+
+            return Ok( _acPortfolioDb.Surveys
+                .Include(x => x.Questions)
+                .ThenInclude(x => x.MultipleChoiceOptions)
+                .Where(x => x.CreatedByAccountId == loggedInAccountId));
         }
 
         [HttpPut] 
@@ -141,6 +168,21 @@ namespace PortfolioWebApi.Controllers
 
             var dbSurvey = await _acPortfolioDb.Surveys.FirstOrDefaultAsync(x => x.Id == model.Id);
 
+            if (dbSurvey == null)
+            {
+                return BadRequest("Invalid survey ID.");
+            }
+
+            if (dbSurvey.CreatedByAccountId.HasValue && dbSurvey.CreatedByAccountId != 0)
+            {
+                var accountId = User.GetAccountIdOrNull();
+
+                if (accountId != dbSurvey.CreatedByAccountId)
+                {
+                    return Unauthorized("Invalid authorisation token. This survey can only be edited by the user who created it.");
+                }
+            }
+
             dbSurvey.Name = model.Name;
             dbSurvey.Questions.Clear();
             dbSurvey.Questions.AddRange(model.Questions);
@@ -191,6 +233,19 @@ namespace PortfolioWebApi.Controllers
             if (dbSurvey == null)
             {
                 return BadRequest("Invalid survey ID");
+            }
+
+            if (dbSurvey.CreatedByAccountId != null && dbSurvey.CreatedByAccountId != 0)
+            {
+                if (dbSurvey.CreatedByAccountId.HasValue && dbSurvey.CreatedByAccountId != 0)
+                {
+                    var accountId = User.GetAccountIdOrNull();
+
+                    if (accountId != dbSurvey.CreatedByAccountId)
+                    {
+                        return Unauthorized("Invalid authorisation token. This survey can only be deleted by the user who created it.");
+                    }
+                }
             }
 
             foreach (var question in dbSurvey.Questions)

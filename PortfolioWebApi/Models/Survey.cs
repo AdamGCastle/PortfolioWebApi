@@ -1,4 +1,6 @@
-﻿namespace PortfolioWebApi.Models
+﻿using System.Text.Json.Serialization;
+
+namespace PortfolioWebApi.Models
 {
     public class Survey
     {
@@ -8,7 +10,12 @@
         public DateTime DateUpdated { get; set; }
         public int TimesTaken { get { return SurveyResponses.Count; } }
 
+        public int? CreatedByAccountId { get; set; }
+
         public List<Question> Questions { get; set; } = [];
         public List<SurveyResponse> SurveyResponses { get; set;  } = [];
+
+        [JsonIgnore]
+        public Account CreatedByAccount { get; set; }
     }
 }

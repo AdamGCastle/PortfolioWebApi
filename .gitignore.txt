@@ -1,0 +1,64 @@
+# Ignore Visual Studio-specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build and binary files
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
+*.app
+*.log
+
+# Ignore NuGet packages
+*.nupkg
+packages/
+!packages/repositories.config
+
+# Ignore .NET Core / .NET 5+ dependency files
+project.lock.json
+project.assets.json
+
+# Ignore logs, lock files, and temp files
+*.log
+*.lock
+*.cache
+*.tmp
+*.DS_Store
+
+# Ignore test results
+TestResults/
+*.coverage
+*.coveragexml
+
+# Ignore IDE settings
+.idea/
+*.iml
+*.vsconfig
+
+# Ignore local database files
+*.mdf
+*.ldf
+
+# Ignore environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+secrets.json
+
+# Ignore Rider / Resharper files
+*.sln.DotSettings.user
+.idea/
+
+# Ignore Code Coverage data
+*.coverage
+coverage/
+
+# Ignore SonarQube files
+.sonar/

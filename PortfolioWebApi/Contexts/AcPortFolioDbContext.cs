@@ -7,20 +7,21 @@ namespace PortfolioWebApi.Contexts
 {
     internal class AcPortFolioDbContext : DbContext
     {
-        readonly static IConfigurationSection _section = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()
-            .GetSection("ConnectionStrings");
+        readonly static IConfigurationSection _section = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings");
 
-        internal DbSet<Survey> Surveys { get; set; }
-        internal DbSet<SurveyResponse> SurveyResponses { get; set; }
-        internal DbSet<Question> Questions { get; set; }
-        internal DbSet<QuestionResponse> QuestionResponses { get; set; }
+        internal DbSet<Account> Accounts { get; set; }
         internal DbSet<MultipleChoiceOption> MultipleChoiceOptions { get; set; }
         internal DbSet<MultipleChoiceOptionResponse> MultipleChoiceOptionResponses { get; set; }
+        internal DbSet<Question> Questions { get; set; }
+        internal DbSet<QuestionResponse> QuestionResponses { get; set; }
+        internal DbSet<Survey> Surveys { get; set; }
+        internal DbSet<SurveyResponse> SurveyResponses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            new AccountConfiguration(modelBuilder.Entity<Account>());
             new SurveyConfiguration(modelBuilder.Entity<Survey>());
             new SurveyResponseConfiguration(modelBuilder.Entity<SurveyResponse>());
             new QuestionConfiguration(modelBuilder.Entity<Question>());
