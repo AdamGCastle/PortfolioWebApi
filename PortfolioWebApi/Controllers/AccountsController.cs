@@ -8,6 +8,7 @@ using System.Security.Claims;
 using bCrypt = BCrypt.Net.BCrypt;
 using System.Text;
 using Microsoft.AspNetCore.Cors;
+using PortfolioWebApi.Extensions;
 
 namespace PortfolioWebApi.Controllers
 {
@@ -24,15 +25,15 @@ namespace PortfolioWebApi.Controllers
         {
             if (string.IsNullOrWhiteSpace(model.Email) && string.IsNullOrWhiteSpace(model.Username))
             {
-                return BadRequest("Please provide either a user name or an email address.");
+                return BadRequest("Please provide either a username or an email address.");
             }
 
-            if (string.IsNullOrWhiteSpace(model.Password))
+            if (string.IsNullOrWhiteSpace(model.NewPassword))
             {
                 return BadRequest("Password cannot be empty.");
             }
 
-            if (_acPortfolioDb.Accounts.Any(u => u.Email == model.Email))
+            if (_acPortfolioDb.Accounts.Any(u => !string.IsNullOrWhiteSpace(model.Email) &&  u.Email == model.Email))
             {
                 return Conflict("Email already in use.");
             }
@@ -46,31 +47,41 @@ namespace PortfolioWebApi.Controllers
             {
                 Username = model.Username,
                 Email = model.Email,
-                PasswordHash = bCrypt.HashPassword(model.Password),
+                PasswordHash = bCrypt.HashPassword(model.NewPassword),
                 DateCreated = DateTime.Now
             };
 
             _acPortfolioDb.Accounts.Add(account);
             await _acPortfolioDb.SaveChangesAsync();
 
-            return Ok(account);
+            return Ok(new AccountDto
+            {
+                Username = account.Username,
+                Id = account.Id,
+                Token = GenerateJwtToken(account)
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(AccountDto model)
         {
-            var dbAccount = await _acPortfolioDb.Accounts.FirstOrDefaultAsync(x => x.Username == model.Username);
-
-            if (dbAccount == null)
+            if (string.IsNullOrWhiteSpace(model.Username))
             {
-                return NotFound();
+                return BadRequest("Username required.");
             }
 
-            bool passwordVerified = bCrypt.Verify(model.Password, dbAccount.PasswordHash);
+            var dbAccount = await _acPortfolioDb.Accounts.FirstOrDefaultAsync(x => x.Username == model.Username);
+            bool passwordVerified = false;
 
-            if (!passwordVerified)
+            if (dbAccount != null)
             {
-                return Unauthorized();
+                passwordVerified = bCrypt.Verify(model.VerifyPassword, dbAccount.PasswordHash);
+                passwordVerified = true;
+            }
+
+            if (dbAccount == null || !passwordVerified)
+            {
+                return Unauthorized("Username or password is incorrect.");
             }
 
             return Ok(new AccountDto
@@ -80,7 +91,118 @@ namespace PortfolioWebApi.Controllers
                 Token = GenerateJwtToken(dbAccount)
             });
         }
-                
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUsername(AccountDto model)
+        {
+            var account = await _acPortfolioDb.Accounts.FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            if (account == null)
+            {
+                return NotFound("Invalid account ID.");
+            }
+
+            if (account.Id != User.GetAccountIdOrNull())
+            {
+                return Unauthorized("Invalid authorisation credentials to make changes to this account.");
+            }
+
+            if (model.Username.Length > 128)
+            {
+                return BadRequest("Username cannot be longer than 128 characters.");
+            }
+
+            if (account.Username == model.Username)
+            {
+                return Ok();
+            }
+
+            var usernameTaken = await _acPortfolioDb.Accounts.AnyAsync(x => x.Username == model.Username);
+
+            if (usernameTaken)
+            {
+                return Conflict("That username is alreadyin use.");
+            }
+
+            account.Username = model.Username;
+            await _acPortfolioDb.SaveChangesAsync();
+
+            return Ok(new AccountDto
+            {
+                Username = account.Username,
+                Id = account.Id,
+                Token = GenerateJwtToken(account)
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(AccountDto model)
+        {
+            var account = await _acPortfolioDb.Accounts.FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            if (account == null)
+            {
+                return NotFound("Invalid account ID.");
+            }
+
+            if (account.Id != User.GetAccountIdOrNull())
+            {
+                return Unauthorized("Invalid authorisation credentials to make changes to this account.");
+            }
+
+            if (!bCrypt.Verify(model.VerifyPassword, account.PasswordHash))
+            {
+                return Unauthorized("The password you have provided for verification is incorrect.");
+            }
+
+            if (model.NewPassword == model.VerifyPassword)
+            {
+                return Ok();
+            }
+
+            account.PasswordHash = bCrypt.HashPassword(model.NewPassword);
+            await _acPortfolioDb.SaveChangesAsync();
+
+            return Ok(new AccountDto
+            {
+                Username = account.Username,
+                Id = account.Id,
+                Token = GenerateJwtToken(account)
+            });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(AccountDto model)
+        {
+            var account = await _acPortfolioDb.Accounts
+                .Include(x => x.SurveysCreated)
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            if (account == null)
+            {
+                return NotFound("Invalid account ID.");
+            }
+
+            if (account.Id != User.GetAccountIdOrNull())
+            {
+                return Unauthorized("You are not authorised to make changes to this account.");
+            }
+
+            if (!bCrypt.Verify(model.VerifyPassword, account.PasswordHash))
+            {
+                return Unauthorized("The password you have entered is incorrect.");
+            }
+
+            foreach (var survey in account.SurveysCreated)
+            {
+                survey.CreatedByAccountId = null;
+            }
+
+            _acPortfolioDb.Accounts.Remove(account);
+            await _acPortfolioDb.SaveChangesAsync();
+
+            return Ok();        }
+
         private string GenerateJwtToken(Account account)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

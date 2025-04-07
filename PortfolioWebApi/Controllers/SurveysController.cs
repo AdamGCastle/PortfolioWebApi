@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using PortfolioWebApi.Contexts;
 using PortfolioWebApi.Extensions;
 using PortfolioWebApi.Models;
@@ -84,7 +83,7 @@ namespace PortfolioWebApi.Controllers
         {
             if (accountId == 0)
             {
-                return BadRequest("Survey ID cannot be 0.");
+                return BadRequest("Account ID cannot be 0.");
             }
 
             var loggedInAccountId = User.GetAccountIdOrNull();
@@ -166,7 +165,10 @@ namespace PortfolioWebApi.Controllers
                 return BadRequest("Please add a question.");
             }
 
-            var dbSurvey = await _acPortfolioDb.Surveys.FirstOrDefaultAsync(x => x.Id == model.Id);
+            var dbSurvey = await _acPortfolioDb.Surveys
+                .Include(x => x.Questions)
+                .ThenInclude(x => x.MultipleChoiceOptions)
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (dbSurvey == null)
             {
@@ -184,14 +186,75 @@ namespace PortfolioWebApi.Controllers
             }
 
             dbSurvey.Name = model.Name;
-            dbSurvey.Questions.Clear();
-            dbSurvey.Questions.AddRange(model.Questions);
+
+            foreach (var question in model.Questions)
+            {
+                var dbQuestion = dbSurvey.Questions.FirstOrDefault(q => q.Id == question.Id)
+                                ?? dbSurvey.Questions.FirstOrDefault(q => q.SurveyId == dbSurvey.Id && q.Text == question.Text);
+
+                if (dbQuestion == null)
+                {
+                    question.DateCreated = DateTime.Now;
+                    dbSurvey.Questions.Add(question);
+
+                    continue;
+                }
+
+                if (question.Removed)
+                {
+                    var questionResponses = _acPortfolioDb.QuestionResponses
+                        .Include(x => x.MultipleChoiceOptionResponses)
+                        .Where(x => x.QuestionId == dbQuestion.Id)
+                        .ToList();
+
+                    foreach (var questionResponse in questionResponses)
+                    {
+                        _acPortfolioDb.MultipleChoiceOptionResponses.RemoveRange(questionResponse.MultipleChoiceOptionResponses);
+                    }
+
+                    _acPortfolioDb.QuestionResponses.RemoveRange(dbQuestion.QuestionResponses);
+                    _acPortfolioDb.MultipleChoiceOptions.RemoveRange(dbQuestion.MultipleChoiceOptions);
+
+                    dbSurvey.Questions.Remove(dbQuestion);
+
+                    continue;
+                }
+
+                foreach (var removedMco in question.MultipleChoiceOptions.Where(x => x.Removed).ToList())
+                {
+                    var dbMultipleChoiceOption = await _acPortfolioDb.MultipleChoiceOptions
+                                                .Include(x => x.MultipleChoiceOptionResponses)
+                                                .FirstOrDefaultAsync(x => x.Id == removedMco.Id);
+
+                    _acPortfolioDb.MultipleChoiceOptionResponses.RemoveRange(dbMultipleChoiceOption.MultipleChoiceOptionResponses);
+                    _acPortfolioDb.MultipleChoiceOptions.Remove(dbMultipleChoiceOption);
+                }
+
+                dbQuestion.DateUpdated = DateTime.Now;
+                dbQuestion.Text = question.Text;
+                dbQuestion.IsMultipleChoice = question.IsMultipleChoice;
+                dbQuestion.MultipleAnswersPermitted = question.MultipleAnswersPermitted;
+
+                foreach(var multipleChoiceOption in question.MultipleChoiceOptions)
+                {
+                    var dbMultipleChoiceOption = dbQuestion.MultipleChoiceOptions.FirstOrDefault(m => m.Id == multipleChoiceOption.Id)
+                                ?? (dbQuestion.MultipleChoiceOptions.FirstOrDefault(m => m.Text == multipleChoiceOption.Text));
+
+                    if (dbMultipleChoiceOption == null)
+                    {
+                        dbQuestion.MultipleChoiceOptions.Add(multipleChoiceOption);
+
+                        continue;
+                    }
+
+                    dbMultipleChoiceOption.DateUpdated = DateTime.Now;
+                }
+            }
+
             dbSurvey.DateUpdated = DateTime.Now;
 
-            foreach(var question in model.Questions)
+            foreach(var question in model.Questions.Where(x => !x.Removed).ToList())
             {
-                question.DateUpdated = DateTime.Now;
-
                 if (question.Id > 0)
                 {
                     question.DateUpdated = DateTime.Now;

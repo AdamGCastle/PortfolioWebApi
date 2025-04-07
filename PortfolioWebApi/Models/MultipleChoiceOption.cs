@@ -10,6 +10,7 @@ namespace PortfolioWebApi.Models
         public string Text { get; set; }
         public int QuestionId { get; set; }
         public int TimesSelected { get  { return MultipleChoiceOptionResponses.Count; } }
+        public bool Removed { get; set; }
 
         [JsonIgnore]
         public Question Question { get; set; }

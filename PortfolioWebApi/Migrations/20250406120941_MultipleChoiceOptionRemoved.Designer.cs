@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PortfolioWebApi.Contexts;
 
@@ -11,9 +12,11 @@ using PortfolioWebApi.Contexts;
 namespace PortfolioWebApi.Migrations
 {
     [DbContext(typeof(AcPortFolioDbContext))]
-    partial class AcPortFolioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250406120941_MultipleChoiceOptionRemoved")]
+    partial class MultipleChoiceOptionRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,7 +224,7 @@ namespace PortfolioWebApi.Migrations
                     b.HasOne("PortfolioWebApi.Models.Question", "Question")
                         .WithMany("MultipleChoiceOptions")
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Question");
@@ -232,13 +235,13 @@ namespace PortfolioWebApi.Migrations
                     b.HasOne("PortfolioWebApi.Models.MultipleChoiceOption", "MultipleChoiceOption")
                         .WithMany("MultipleChoiceOptionResponses")
                         .HasForeignKey("MultipleChoiceOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PortfolioWebApi.Models.QuestionResponse", "QuestionResponse")
                         .WithMany("MultipleChoiceOptionResponses")
                         .HasForeignKey("QuestionResponseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("MultipleChoiceOption");
@@ -251,7 +254,7 @@ namespace PortfolioWebApi.Migrations
                     b.HasOne("PortfolioWebApi.Models.Survey", "Survey")
                         .WithMany("Questions")
                         .HasForeignKey("SurveyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Survey");
@@ -262,13 +265,13 @@ namespace PortfolioWebApi.Migrations
                     b.HasOne("PortfolioWebApi.Models.Question", "Question")
                         .WithMany("QuestionResponses")
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PortfolioWebApi.Models.SurveyResponse", "SurveyResponse")
                         .WithMany("QuestionResponses")
                         .HasForeignKey("SurveyResponseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Question");

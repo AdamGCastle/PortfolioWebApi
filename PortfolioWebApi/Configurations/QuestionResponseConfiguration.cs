@@ -11,9 +11,9 @@ namespace PortfolioWebApi.Configurations
             entityBuilder.HasKey(x => x.Id);
             entityBuilder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
 
-            entityBuilder.HasOne(qr => qr.Question).WithMany(q => q.QuestionResponses).HasForeignKey(qr => qr.QuestionId).OnDelete(DeleteBehavior.Restrict);
-            entityBuilder.HasOne(qr => qr.SurveyResponse).WithMany(sr => sr.QuestionResponses).HasForeignKey(qr => qr.SurveyResponseId).OnDelete(DeleteBehavior.Restrict);
-            entityBuilder.HasMany(qr => qr.MultipleChoiceOptionResponses).WithOne(mr => mr.QuestionResponse).HasForeignKey(mr => mr.QuestionResponseId).OnDelete(DeleteBehavior.Restrict);
+            entityBuilder.HasOne(qr => qr.Question).WithMany(q => q.QuestionResponses).HasForeignKey(qr => qr.QuestionId).OnDelete(DeleteBehavior.NoAction);
+            entityBuilder.HasOne(qr => qr.SurveyResponse).WithMany(sr => sr.QuestionResponses).HasForeignKey(qr => qr.SurveyResponseId).OnDelete(DeleteBehavior.Cascade);
+            entityBuilder.HasMany(qr => qr.MultipleChoiceOptionResponses).WithOne(mr => mr.QuestionResponse).HasForeignKey(mr => mr.QuestionResponseId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
