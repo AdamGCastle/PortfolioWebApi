@@ -59,6 +59,7 @@ namespace PortfolioWebApi.Controllers
             var accountId = User.GetAccountIdOrNull();
             var surveys = await _acPortfolioDb.Surveys
                                 .Where(x => !forEdit || x.CreatedByAccountId == 0 || x.CreatedByAccountId == null || x.CreatedByAccountId == accountId)
+                                .OrderBy(x => x.Name)
                                 .ToListAsync();
 
             return Ok(surveys);
