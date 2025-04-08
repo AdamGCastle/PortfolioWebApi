@@ -9,6 +9,7 @@ namespace PortfolioWebApi.Models
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public int TimesTaken { get { return SurveyResponses.Count; } }
+        public bool Published { get; set; }
 
         public int? CreatedByAccountId { get; set; }
 
