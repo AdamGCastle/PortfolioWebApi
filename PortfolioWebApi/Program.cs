@@ -15,10 +15,14 @@ builder.Services.AddCors(options =>
                 //"http://localhost:3000", 
                 //"http://localhost:4200", 
                 "https://takeasurvey.acprojects.ip-ddns.com",
+                "https://takeasurvey.acprojects.ip-ddns.com/",
                 "https://www.takeasurvey.acprojects.ip-ddns.com",
                 "https://makeasurvey.acprojects.ip-ddns.com",
+                "https://makeasurvey.acprojects.ip-ddns.com/",
                 "https://www.makeasurvey.acprojects.ip-ddns.com",
+                "https://witty-island-04b8c5b03.5.azurestaticapps.net",
                 "https://witty-island-04b8c5b03.5.azurestaticapps.net/",
+                "https://white-sea-00426ad03.5.azurestaticapps.net",
                 "https://white-sea-00426ad03.5.azurestaticapps.net/"
             )
             //.AllowAnyOrigin()
