@@ -27,13 +27,7 @@ namespace PortfolioWebApi.Controllers
                 return BadRequest("Please add a question.");
             }
 
-            var accountId = User.GetAccountIdOrNull();
-
-            if (accountId.HasValue && accountId != 0)
-            {               
-                model.CreatedByAccountId = accountId;                
-            }          
-
+            model.CreatedByAccountId = User.GetAccountIdOrNull();
             model.Id = 0;
             model.DateCreated = DateTime.Now;
 
